@@ -20,7 +20,7 @@ import java.awt.event.*;
 /***
  * Step 1 for keyboard control - implements KeyListener
  */
-public class CheeseWorld implements Runnable, KeyListener {
+public class SkateFacts implements Runnable, KeyListener {
 
     //Variable Definition Section
 
@@ -35,25 +35,33 @@ public class CheeseWorld implements Runnable, KeyListener {
     public BufferStrategy bufferStrategy;
 
     //Declare the variables needed for images
-    public Image cheesePic;
-    public Image mousePic;
+
+    public Image rinkPic;
+    public Image jumpPic;
+    public Image skaterPic;
     public Image tomPic;
 
+    public Image bearPic;
+
     //Declare the character objects
-    public Mouse mouse1;
-    public Cheese theCheese;
+    public Skater skater1;
+    public Jump theJump;
     public Player user;
+
+    public Bear bear1;
+
+
 
     // Main method definition
     // This is the code that runs first and automatically
     public static void main(String[] args) {
-        CheeseWorld myApp = new CheeseWorld();   //creates a new instance of the game
+        SkateFacts myApp = new SkateFacts();   //creates a new instance of the game
         new Thread(myApp).start();               //creates a threads & starts up the code in the run( ) method
     }
 
     // Constructor Method - setup portion of the program
     // Initialize your variables and construct your program objects here.
-    public CheeseWorld() {
+    public SkateFacts() {
 
         setUpGraphics();
 
@@ -63,14 +71,19 @@ public class CheeseWorld implements Runnable, KeyListener {
         canvas.addKeyListener(this);
 
         //load images
-        cheesePic = Toolkit.getDefaultToolkit().getImage("cheese.gif");
-        mousePic = Toolkit.getDefaultToolkit().getImage("jerry.gif");
+        rinkPic = Toolkit.getDefaultToolkit().getImage("RinkPic.png");
+        jumpPic = Toolkit.getDefaultToolkit().getImage("cheese.gif");
+        skaterPic = Toolkit.getDefaultToolkit().getImage("RaccoonSkater.png");
         tomPic = Toolkit.getDefaultToolkit().getImage("tomCat.png");
+        bearPic = Toolkit.getDefaultToolkit().getImage("Bear.png");
+
+
 
         //create (construct) the objects needed for the game
-        mouse1 = new Mouse(200, 300, 4, 4, mousePic);
-        theCheese = new Cheese(400, 300, 3, -4, cheesePic);
+        skater1 = new Skater(200, 300, 4, 4, skaterPic);
+        theJump = new Jump(400, 300, 3, -4, jumpPic);
         user = new Player(250, 250, 0, 0, tomPic);
+        bear1 = new Bear(800,300,3,-4, bearPic);
 
     } // CheeseWorld()
 
@@ -81,9 +94,10 @@ public class CheeseWorld implements Runnable, KeyListener {
     // main thread
     // this is the code that plays the game after you set things up
     public void moveThings() {
-        mouse1.move();
-        theCheese.move();
+        skater1.move();
+        theJump.move();
         user.move();
+        bear1.move();
     }
 
     public void checkIntersections() {
@@ -105,9 +119,12 @@ public class CheeseWorld implements Runnable, KeyListener {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         //draw characters to the screen
-        g.drawImage(mouse1.pic, mouse1.xpos, mouse1.ypos, mouse1.width, mouse1.height, null);
-        g.drawImage(theCheese.pic, theCheese.xpos, theCheese.ypos, theCheese.width, theCheese.height, null);
-        g.drawImage(user.pic, user.xpos, user.ypos, user.width, user.height, null);
+        g.drawImage(rinkPic, 0, 0, 1000, 600, null);
+        g.drawImage(skater1.pic, skater1.xpos, skater1.ypos, skater1.width, skater1.height, null);
+        g.drawImage(theJump.pic, theJump.xpos, theJump.ypos, theJump.width, theJump.height, null);
+        g.drawImage(skater1.pic, skater1.xpos, skater1.ypos, skater1.width, skater1.height, null);
+        g.drawImage(bear1.pic, bear1.xpos, bear1.ypos, bear1.width, bear1.height, null);
+
 
         g.dispose();
         bufferStrategy.show();
@@ -125,17 +142,17 @@ public class CheeseWorld implements Runnable, KeyListener {
         System.out.println("Key Pressed: " + key + "  Code: " + keyCode);
 
         if (keyCode == 68) { // d
-            user.right = true;
+            skater1.right = true;
         }
         if (keyCode == 65) { // a
-            user.left = true;
+            skater1.left = true;
         }
 
         if (keyCode == 83) { // s
-            user.down = true;
+            skater1.down = true;
         }
         if (keyCode == 87) { // w
-            user.up = true;
+            skater1.up = true;
         }
     }//keyPressed()
 
@@ -144,16 +161,16 @@ public class CheeseWorld implements Runnable, KeyListener {
         int keyCode = event.getKeyCode();
         //This method will do something when a key is released
         if (keyCode == 68) { // d
-            user.right = false;
+            skater1.right = false;
         }
         if (keyCode == 65) { // a
-            user.left = false;
+            skater1.left = false;
         }
         if (keyCode == 83) { // s
-            user.down = false;
+            skater1.down = false;
         }
         if (keyCode == 87) { // w
-            user.up = false;
+            skater1.up = false;
         }
 
     }//keyReleased()
@@ -166,7 +183,7 @@ public class CheeseWorld implements Runnable, KeyListener {
 
     //Graphics setup method
     public void setUpGraphics() {
-        frame = new JFrame("CheeseWorld");   //Create the program window or frame.  Names it.
+        frame = new JFrame("SkateFacts");   //Create the program window or frame.  Names it.
 
         panel = (JPanel) frame.getContentPane();  //sets up a JPanel which is what goes in the frame
         panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));  //sizes the JPanel
