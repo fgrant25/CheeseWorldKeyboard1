@@ -30,8 +30,8 @@ import java.awt.*;
 
 			xpos = pXpos;
 			ypos = pYpos;
-			width = 150;
-			height = 250;
+			width = 50;
+			height = 100;
 			dx = 10;
 			dy = 10;
 			isAlive = true;
@@ -46,8 +46,8 @@ import java.awt.*;
 
 			xpos = pXpos;
 			ypos = pYpos;
-			width = 150;
-			height = 250;
+			width = 100;
+			height = 150;
 			dx = dxParameter;
 			dy = dyParameter;
 			pic = picParameter;

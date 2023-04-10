@@ -45,10 +45,26 @@ public class SkateFacts implements Runnable, KeyListener {
 
     //Declare the character objects
     public Skater skater1;
-    public Jump theJump;
+    public Jump[] theJump;
     public Player user;
 
     public Bear bear1;
+    public String[] Bookshelf;
+    public Font myFont;
+
+    public int Fact;
+
+    public boolean gameOver = false;
+
+    public boolean gamePlaying = false;
+
+  //  public class Array;
+
+//    public static void main(String[] args) {
+//        new Array();
+//    }
+
+
 
 
 
@@ -64,12 +80,12 @@ public class SkateFacts implements Runnable, KeyListener {
     public SkateFacts() {
 
         setUpGraphics();
-
+        theJump= new Jump[10];
         /***
          * Step 2 for keyboard control - addKeyListener(this) to the canvas
          */
         canvas.addKeyListener(this);
-
+        myFont= new Font("Serif",Font.BOLD,30);
         //load images
         rinkPic = Toolkit.getDefaultToolkit().getImage("RinkPic.png");
         jumpPic = Toolkit.getDefaultToolkit().getImage("cheese.gif");
@@ -81,9 +97,29 @@ public class SkateFacts implements Runnable, KeyListener {
 
         //create (construct) the objects needed for the game
         skater1 = new Skater(200, 300, 4, 4, skaterPic);
-        theJump = new Jump(400, 300, 3, -4, jumpPic);
+
+        for(int x=0; x<theJump.length; x++) {
+            theJump[x] = new Jump((int)(WIDTH*Math.random()), (int)(HEIGHT*Math.random()), 3, -4, jumpPic);
+        }
+
+
+
+
+
+
+
         user = new Player(250, 250, 0, 0, tomPic);
         bear1 = new Bear(800,300,3,-4, bearPic);
+
+        System.out.println("Hello World");
+        this.Bookshelf = new String[5];
+        this.Bookshelf[0] = "The scientific name for raccoons is Procyon lotor";
+        this.Bookshelf[1] = "Raccoons are very cool";
+        this.Bookshelf[2] = "Raccoons live in the wild for an average of 2-3 years";
+        this.Bookshelf[3] = "No, you should not hug raccoons";
+        this.Bookshelf[4] = "Raccoons weigh on average 14-23 lbs (yes you can pick one up, no you should not.)";
+        System.out.println(this.Bookshelf[(int)(Math.random()*3)]);
+
 
     } // CheeseWorld()
 
@@ -95,13 +131,25 @@ public class SkateFacts implements Runnable, KeyListener {
     // this is the code that plays the game after you set things up
     public void moveThings() {
         skater1.move();
-        theJump.move();
+        for(int x=0; x<theJump.length; x++) {
+
+            theJump[x].move();
+        }
         user.move();
         bear1.move();
     }
 
     public void checkIntersections() {
+        for(int x=0; x<theJump.length; x++) {
 
+            if (skater1.rec.intersects(theJump[x].rec)) {
+
+                Fact = (int) (Bookshelf.length * Math.random());
+                theJump[x].xpos = (int) (500 * Math.random());
+                theJump[x].ypos = (int) (600 * Math.random());
+
+            }
+        }
     }
 
     public void run() {
@@ -117,14 +165,18 @@ public class SkateFacts implements Runnable, KeyListener {
     public void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
-
+        g.setFont(myFont);
         //draw characters to the screen
         g.drawImage(rinkPic, 0, 0, 1000, 600, null);
         g.drawImage(skater1.pic, skater1.xpos, skater1.ypos, skater1.width, skater1.height, null);
-        g.drawImage(theJump.pic, theJump.xpos, theJump.ypos, theJump.width, theJump.height, null);
+        for(int x=0; x<theJump.length; x++) {
+
+            g.drawImage(theJump[x].pic, theJump[x].xpos, theJump[x].ypos, theJump[x].width, theJump[x].height, null);
+        }
         g.drawImage(skater1.pic, skater1.xpos, skater1.ypos, skater1.width, skater1.height, null);
         g.drawImage(bear1.pic, bear1.xpos, bear1.ypos, bear1.width, bear1.height, null);
-
+        g.setColor(new Color(0,0,0));
+        g.drawString(Bookshelf[Fact],15,630);
 
         g.dispose();
         bufferStrategy.show();
